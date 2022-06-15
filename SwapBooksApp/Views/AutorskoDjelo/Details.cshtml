@@ -1,4 +1,4 @@
-﻿@model SwapBooksApp.Models.Knjiga
+﻿@model SwapBooksApp.Models.AutorskoDjelo
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Knjiga</h4>
+    <h4>AutorskoDjelo</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -17,26 +17,31 @@
             @Html.DisplayFor(model => model.Naziv)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ocjena)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ocjena)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Korisnik)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Korisnik.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Zauzeta)
+            @Html.DisplayNameFor(model => model.Cijena)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Zauzeta)
+            @Html.DisplayFor(model => model.Cijena)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slika)
+            @Html.DisplayNameFor(model => model.Autor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slika)
+            @Html.DisplayFor(model => model.Autor)
         </dd>
     </dl>
 </div>
-
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

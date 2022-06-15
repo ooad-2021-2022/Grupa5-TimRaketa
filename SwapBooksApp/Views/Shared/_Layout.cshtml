@@ -24,9 +24,39 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                           <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Knjiga" asp-action="Biblioteka">Biblioteka</a>
+                          <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Knjiga" asp-action="Index">Sve knjige</a>
                         </li>
+                        @if (User.IsInRole("ObicniKorisnik") || User.IsInRole("SuperKorisnik"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Knjiga" asp-action="Biblioteka">Biblioteka</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Knjiga" asp-action="Create">Dodaj Knjigu</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("SuperKorisnik"))
+                        {
+
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AutorskoDjelo" asp-action="Create">Dodaj djelo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AutorskoDjelo" asp-action="Biblioteka">Moja djela</a>
+                            </li>
+
+                        }
+                         @if (User.IsInRole("Administrator"))
+                        {
+                               <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AutorskoDjelo" asp-action="Index">Sva autorska djela</a>
+                            </li>
+                        }
+
+                         
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

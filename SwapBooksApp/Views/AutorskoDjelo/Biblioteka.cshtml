@@ -1,12 +1,14 @@
-﻿@model IEnumerable<SwapBooksApp.Models.Knjiga>
+﻿@model IEnumerable<SwapBooksApp.Models.AutorskoDjelo>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Moja autorska djela";
 }
 
-<h1>Trenutno dostupne knjige: </h1>
+<h1>Index</h1>
 
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -14,11 +16,16 @@
                 @Html.DisplayNameFor(model => model.Naziv)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Ocjena)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Korisnik)
             </th>
-          
             <th>
-                @Html.DisplayNameFor(model => model.Slika)
+                @Html.DisplayNameFor(model => model.Cijena)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Autor)
             </th>
             <th></th>
         </tr>
@@ -30,20 +37,22 @@
                 @Html.DisplayFor(modelItem => item.Naziv)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Korisnik.Ime )
+                @Html.DisplayFor(modelItem => item.Ocjena)
             </td>
-           
             <td>
-                @Html.DisplayFor(modelItem => item.Slika)
+                @Html.DisplayFor(modelItem => item.Korisnik.Id)
             </td>
-               @if (User.IsInRole("Administrator"))
- {
+            <td>
+                @Html.DisplayFor(modelItem => item.Cijena)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Autor)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
-               }
         </tr>
 }
     </tbody>

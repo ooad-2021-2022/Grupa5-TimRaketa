@@ -11,9 +11,9 @@ namespace SwapBooksApp.Models
         public string Poruka { get; set; }
         public DateTime Datum { get; set; }
 
-        [ForeignKey("Korisnik")]
+          [ForeignKey("Korisnik")]
         public string korisnikId { get; set; }
-        public Korisnik Korisnik { get; set; }
+        public Korisnik Korisnik { get; set; }  
 
 
         [EnumDataType(typeof(VrstaNotifikacije))]

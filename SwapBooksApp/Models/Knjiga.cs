@@ -10,12 +10,13 @@ namespace SwapBooksApp.Models
         public string Naziv { get; set; }
 
         [ForeignKey("Korisnik")]
-        public string KorisnikId { get; set; }
+        public string korisnikId { get; set; }
         public Korisnik Korisnik { get; set; }  
 
         public bool Zauzeta{ get; set; }
 
        public string Slika { get; set; }
+
         public Knjiga() { }
 
     }
