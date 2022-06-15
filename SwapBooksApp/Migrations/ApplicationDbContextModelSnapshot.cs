@@ -3,22 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SwapBooksApp.Data;
 
-namespace SwapBooksApp.Data.Migrations
+namespace SwapBooksApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220611160524_PrvaMigracija")]
-    partial class PrvaMigracija
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.16")
+                .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -84,6 +82,10 @@ namespace SwapBooksApp.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -135,6 +137,8 @@ namespace SwapBooksApp.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -228,18 +232,18 @@ namespace SwapBooksApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AutorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Naziv")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Ocjena")
                         .HasColumnType("float");
 
+                    b.Property<string>("korisnikId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AutorId");
+                    b.HasIndex("korisnikId");
 
                     b.ToTable("AutorskoDjelo");
                 });
@@ -251,52 +255,23 @@ namespace SwapBooksApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("KorisnikId")
-                        .HasColumnType("int");
+                    b.Property<string>("KorisnikId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Naziv")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Slika")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Zauzeta")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("KorisnikId");
 
                     b.ToTable("Knjiga");
-                });
-
-            modelBuilder.Entity("SwapBooksApp.Models.Korisnik", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ime")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KorisnickoIme")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lozinka")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Prezime")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RacunId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Vrsta")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RacunId");
-
-                    b.ToTable("Korisnik");
                 });
 
             modelBuilder.Entity("SwapBooksApp.Models.Notifikacija", b =>
@@ -309,19 +284,18 @@ namespace SwapBooksApp.Data.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Korisnik")
-                        .HasColumnType("int");
-
-                    b.Property<int>("KorisnikId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Poruka")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Svrha")
                         .HasColumnType("int");
 
+                    b.Property<string>("korisnikId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("korisnikId");
 
                     b.ToTable("Notifikacija");
                 });
@@ -336,7 +310,12 @@ namespace SwapBooksApp.Data.Migrations
                     b.Property<double>("Stanje")
                         .HasColumnType("float");
 
+                    b.Property<string>("korisnikId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("korisnikId");
 
                     b.ToTable("Racun");
                 });
@@ -351,22 +330,17 @@ namespace SwapBooksApp.Data.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("KnjigaId")
+                    b.Property<int>("Knjiga1Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Korisnik1Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Korisnik2Id")
+                    b.Property<int>("Knjiga2Id")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KnjigaId");
+                    b.HasIndex("Knjiga1Id");
 
-                    b.HasIndex("Korisnik1Id");
-
-                    b.HasIndex("Korisnik2Id");
+                    b.HasIndex("Knjiga2Id");
 
                     b.ToTable("Razmjena");
                 });
@@ -384,19 +358,32 @@ namespace SwapBooksApp.Data.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("KorisnikId")
-                        .HasColumnType("int");
-
                     b.Property<double>("Ocjena")
                         .HasColumnType("float");
+
+                    b.Property<string>("korisnikId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AutorskoDjeloId");
 
-                    b.HasIndex("KorisnikId");
+                    b.HasIndex("korisnikId");
 
                     b.ToTable("Recenzija");
+                });
+
+            modelBuilder.Entity("SwapBooksApp.Models.Korisnik", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Ime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prezime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Korisnik");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -452,62 +439,57 @@ namespace SwapBooksApp.Data.Migrations
 
             modelBuilder.Entity("SwapBooksApp.Models.AutorskoDjelo", b =>
                 {
-                    b.HasOne("SwapBooksApp.Models.Korisnik", "autor")
+                    b.HasOne("SwapBooksApp.Models.Korisnik", "Korisnik")
                         .WithMany()
-                        .HasForeignKey("AutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("korisnikId");
 
-                    b.Navigation("autor");
+                    b.Navigation("Korisnik");
                 });
 
             modelBuilder.Entity("SwapBooksApp.Models.Knjiga", b =>
                 {
-                    b.HasOne("SwapBooksApp.Models.Korisnik", "korisnik")
+                    b.HasOne("SwapBooksApp.Models.Korisnik", "Korisnik")
                         .WithMany()
-                        .HasForeignKey("KorisnikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("KorisnikId");
 
-                    b.Navigation("korisnik");
+                    b.Navigation("Korisnik");
                 });
 
-            modelBuilder.Entity("SwapBooksApp.Models.Korisnik", b =>
+            modelBuilder.Entity("SwapBooksApp.Models.Notifikacija", b =>
                 {
-                    b.HasOne("SwapBooksApp.Models.Racun", "Racun")
+                    b.HasOne("SwapBooksApp.Models.Korisnik", "Korisnik")
                         .WithMany()
-                        .HasForeignKey("RacunId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("korisnikId");
 
-                    b.Navigation("Racun");
+                    b.Navigation("Korisnik");
+                });
+
+            modelBuilder.Entity("SwapBooksApp.Models.Racun", b =>
+                {
+                    b.HasOne("SwapBooksApp.Models.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("korisnikId");
+
+                    b.Navigation("Korisnik");
                 });
 
             modelBuilder.Entity("SwapBooksApp.Models.Razmjena", b =>
                 {
-                    b.HasOne("SwapBooksApp.Models.Knjiga", "knjiga")
+                    b.HasOne("SwapBooksApp.Models.Knjiga", "Knjiga1")
                         .WithMany()
-                        .HasForeignKey("KnjigaId")
+                        .HasForeignKey("Knjiga1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SwapBooksApp.Models.Korisnik", "Korisnik1")
+                    b.HasOne("SwapBooksApp.Models.Knjiga", "Knjiga2")
                         .WithMany()
-                        .HasForeignKey("Korisnik1Id")
+                        .HasForeignKey("Knjiga2Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SwapBooksApp.Models.Korisnik", "Korisnik2")
-                        .WithMany()
-                        .HasForeignKey("Korisnik2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Knjiga1");
 
-                    b.Navigation("knjiga");
-
-                    b.Navigation("Korisnik1");
-
-                    b.Navigation("Korisnik2");
+                    b.Navigation("Knjiga2");
                 });
 
             modelBuilder.Entity("SwapBooksApp.Models.Recenzija", b =>
@@ -520,9 +502,7 @@ namespace SwapBooksApp.Data.Migrations
 
                     b.HasOne("SwapBooksApp.Models.Korisnik", "Korisnik")
                         .WithMany()
-                        .HasForeignKey("KorisnikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("korisnikId");
 
                     b.Navigation("AutorskoDjelo");
 

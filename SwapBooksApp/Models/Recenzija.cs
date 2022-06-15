@@ -12,12 +12,13 @@ namespace SwapBooksApp.Models
         public DateTime Datum { get; set; }
         [ForeignKey("AutorskoDjelo")]
         public int AutorskoDjeloId { get; set; }
-
         [ForeignKey("Korisnik")]
-        public int KorisnikId { get; set; }
+        public string korisnikId { get; set; }
+        public Korisnik Korisnik { get; set; }
+
 
         public AutorskoDjelo AutorskoDjelo { get; set; }
-        public Korisnik Korisnik { get; set; }
+       
 
         public Recenzija()
         {

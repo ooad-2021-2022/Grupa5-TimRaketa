@@ -8,16 +8,15 @@ namespace SwapBooksApp.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Korisnik")]
-        public int Korisnik1Id { get; set; }
-        [ForeignKey("Korisnik")]
-        public int Korisnik2Id { get; set; }
+
         [ForeignKey("Knjiga")]
-        public int KnjigaId { get; set; }
+        public int Knjiga1Id { get; set; }
+        [ForeignKey("Knjiga")]
+        public int Knjiga2Id { get; set; }
         public DateTime Datum { get; set; }
-        public Korisnik Korisnik1 { get; set; }
-        public Korisnik Korisnik2 { get; set; }
-        public Knjiga knjiga { get; set; }
+   
+        public Knjiga Knjiga1 { get; set; }
+        public Knjiga Knjiga2 { get; set; }
         public Razmjena() { }
 
     }

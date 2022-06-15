@@ -15,7 +15,7 @@ namespace SwapBooksApp.Data
         }
         public DbSet<AutorskoDjelo> AutorskoDjelo { get; set; }
         public DbSet<Knjiga> Knjiga { get; set; }
-        public DbSet<Korisnik> Korisnik { get; set; }
+    
         public DbSet<Notifikacija> Notifikacija { get; set; }
         public DbSet<Racun> Racun { get; set; }
         public DbSet<Razmjena> Razmjena { get; set; }
@@ -25,7 +25,6 @@ namespace SwapBooksApp.Data
         {
             modelBuilder.Entity<AutorskoDjelo>().ToTable("AutorskoDjelo");
             modelBuilder.Entity<Knjiga>().ToTable("Knjiga");
-            modelBuilder.Entity<Korisnik>().ToTable("Korisnik");
             modelBuilder.Entity<Notifikacija>().ToTable("Notifikacija");
             modelBuilder.Entity<Racun>().ToTable("Racun");
             modelBuilder.Entity<Razmjena>().ToTable("Razmjena");

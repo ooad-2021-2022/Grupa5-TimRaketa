@@ -1,7 +1,12 @@
-﻿namespace SwapBooksApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SwapBooksApp.Models
 {
     public enum VrstaNotifikacije
     {
-        razmjena, kupovina, prodaja,recenzija
+        [Display(Name = "Razmjena")] RAZMJENA,
+        [Display(Name = "Kupovina")] KUPOVINA,
+        [Display(Name = "Prodaja")] PRODAJA,
+        [Display(Name = "Recenzija")]RECENZIJA
     }
 }
